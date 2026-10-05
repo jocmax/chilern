@@ -3,7 +3,7 @@
 A webapp for beginners and advanced learners alike to learn Mandarin.
 
 //TODO: insert logo
-![Alt Text](assets/images/snoopy-and-woodstock.png)
+<img src="@/assets/images/snoopy-and-woodstock.png" alt="Logo" width="100" />
 
 ## Motivation
 

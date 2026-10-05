@@ -5,10 +5,14 @@ import { Platform } from "react-native";
 export const Colors = {
   light: {
     text: "#000000",
-    background: "#ffffff",
+    background: "#39b2c7",
     backgroundElement: "#F0F0F3",
     backgroundSelected: "#E0E1E6",
     textSecondary: "#60646C",
+    buttonBackground: "#b33b77",
+    backgroundPressed: "#681060",
+    buttonText: "#000000",
+    border: "#5e0e36",
   },
   dark: {
     text: "#ffffff",
@@ -16,10 +20,21 @@ export const Colors = {
     backgroundElement: "#212225",
     backgroundSelected: "#2E3135",
     textSecondary: "#B0B4BA",
+    buttonBackground: "#5353d4",
+    backgroundPressed: "#202d70",
+    buttonText: "#f3f2f2",
+    border: "#0c143b",
   },
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+
+export const ButtonStyles = {
+  borderRadius: 30,
+  paddingVertical: 12,
+  paddingHorizontal: 16,
+  borderWidth: 1,
+} as const;
 
 export const Fonts = Platform.select({
   ios: {

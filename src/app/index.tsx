@@ -1,19 +1,43 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Spacing } from "@/constants/theme";
-import { Image, StyleSheet } from "react-native";
+import { useAppColors } from "@/hooks/useAppColors";
+import { useRouter } from "expo-router";
+import { Image, Pressable, StyleSheet } from "react-native";
 
 export default function HomeScreen() {
+  const colors = useAppColors();
+  const router = useRouter();
+  const handlePress = () => {
+    router.push("/chatbot");
+  };
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title" style={styles.title}>
         你好
       </ThemedText>
-
       <Image
         source={require("@/assets/images/snoopy-and-woodstock.png")}
         style={styles.imageMainLogo}
       />
+      <Pressable
+        style={({ pressed }) => [
+          styles.startButton,
+          {
+            backgroundColor: pressed
+              ? colors.backgroundPressed
+              : colors.buttonBackground,
+            borderColor: colors.border,
+          },
+        ]}
+        onPress={handlePress}
+      >
+        <ThemedText
+          style={{ color: colors.buttonText, fontWeight: "bold", fontSize: 30 }}
+        >
+          Start
+        </ThemedText>
+      </Pressable>
     </ThemedView>
   );
 }
@@ -35,5 +59,19 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     borderRadius: Spacing.three,
     marginTop: Spacing.two,
+  },
+  startButton: {
+    width: 200,
+    height: 70,
+    backgroundColor: "#007AFF",
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#0056b3",
+  },
+  buttonText: {
+    textAlign: "center",
+    fontSize: 100,
   },
 });
