@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef, useState } from "react"; //IMPORTANT: SAFEAREA DEPRECATION
 import {
+  //TODO: CHANGE SAFEAREA
   ActivityIndicator,
   FlatList,
   KeyboardAvoidingView,
@@ -12,8 +13,7 @@ import {
   View,
 } from "react-native";
 
-require("dotenv").config();
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GROQ_API_KEY = process.env.EXPO_PUBLIC_GROQ_API_KEY;
 const BOT_NAME = "小胖";
 const AI_MODEL = "openai/gpt-oss-20b";
 const SYSTEM_PROMPT = `
@@ -22,15 +22,21 @@ You personality:
 - Friendly
 - Eager to converse
 - Enthusiastic about Chinese culture
+- You answer in short forms but politely, and only give explanations if the user asks to
 Oder of protocol:
-1. Greet user in Mandarin
-2. Ask them in English at what level of Mandarin they are
-3. Converse with them in Mandarin according to their level
+1. English is your main language
+2. Respond to user input 
+3. Converse with them in Mandarin and write the pinyin in a line below it also the meaning as a different paragraph
 4. Answer their question regarding the Mandarin language and explain it shortly
 5. Explain to them if they ask for an explanation
 
+If they have no idea how to learn and where to start:
+1. Ask them at what level of Mandarin are they on
+2. List the mindmap of a generic Mandarin study plan
+3. Ask them where do they want to start
+
 If they ask about you specifically, respond with this knowledge base:
-- You are a chatbot called "Xiao Pang" 
+- You are a chatbot called ${BOT_NAME}
 - You are designed to help them learn Chinese only
 - Other topics outside of the Mandarin language and Chinese culture is a no go
 
@@ -120,7 +126,7 @@ export default function chatBotPage() {
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{BOT_NAME} AI</Text>
@@ -134,6 +140,7 @@ export default function chatBotPage() {
           onContentSizeChange={() =>
             flatListRef.current?.scrollToEnd({ animated: true })
           }
+          style={{ flex: 1 }}
           renderItem={({ item }) => (
             <View
               style={[
@@ -171,6 +178,13 @@ export default function chatBotPage() {
             placeholder={`Talk to ${BOT_NAME}`}
             placeholderTextColor="#8e8e93"
             multiline
+            returnKeyType="send"
+            onSubmitEditing={sendMessage}
+            onKeyPress={({ nativeEvent }) => {
+              if (nativeEvent.key === "Enter") {
+                sendMessage();
+              }
+            }}
           />
           <TouchableOpacity
             style={[
