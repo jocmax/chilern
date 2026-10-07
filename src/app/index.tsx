@@ -8,8 +8,11 @@ import { Image, Pressable, StyleSheet } from "react-native";
 export default function HomeScreen() {
   const colors = useAppColors();
   const router = useRouter();
-  const handlePress = () => {
-    router.push("/chatbot");
+  const chatPress = () => {
+    router.push("../chatbot");
+  };
+  const learnPress = () => {
+    router.push("../teachbot");
   };
   return (
     <ThemedView style={styles.container}>
@@ -30,12 +33,30 @@ export default function HomeScreen() {
             borderColor: colors.border,
           },
         ]}
-        onPress={handlePress}
+        onPress={chatPress}
       >
         <ThemedText
           style={{ color: colors.buttonText, fontWeight: "bold", fontSize: 30 }}
         >
-          Start
+          Chat
+        </ThemedText>
+      </Pressable>
+      <Pressable
+        style={({ pressed }) => [
+          styles.startButton,
+          {
+            backgroundColor: pressed
+              ? colors.backgroundPressed
+              : colors.buttonBackground,
+            borderColor: colors.border,
+          },
+        ]}
+        onPress={learnPress}
+      >
+        <ThemedText
+          style={{ color: colors.buttonText, fontWeight: "bold", fontSize: 30 }}
+        >
+          Learn
         </ThemedText>
       </Pressable>
     </ThemedView>

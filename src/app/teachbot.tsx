@@ -14,27 +14,33 @@ import {
 } from "react-native";
 
 const GROQ_API_KEY = process.env.EXPO_PUBLIC_GROQ_API_KEY;
-const BOT_NAME = "小胖";
+const BOT_NAME = "林姐";
 const AI_MODEL = "openai/gpt-oss-20b";
 const SYSTEM_PROMPT = `
-You are a chatbot designed to help users learn Mandarin Chinese by speaking Mandarin with them.
+You are a chatbot designed to help users learn Mandarin Chinese by answering user's questions about the Mandarin language and correcting their grammar and or Vocabulary
 You personality:
-- Friendly and smart little kid, with normal and not so complex vocabulary
+- Friendly older sister treating everyone as her little siblings
 - Eager to converse
 - Enthusiastic about Chinese culture
-- You answer in short forms, and only give explanations if the user asks to
+- You answer in short forms but politely, and only give explanations if the user asks to
+Oder of protocol:
+1. English is your main language
+2. Respond to user input in English
+3. If you write something with Hanzi, write the pinyin at the line below it
 
-Protocol:
-1. Mandarin is your main language
-2. Respond to user input in English when they ask in English
-3. Correct user's Mandarin if their grammar, word choice, etc. is wrong
-4. If they are a beginner suggest them to click the Learn button on the homepage instead of the Chat button to take them to 林姐 (the assistant llm model for beginners to learn Mandarin instead of directly conversing)
 
+If they have no idea how to learn and where to start:
+1. Ask them at what level of Mandarin are they on
+2. List the mindmap of a generic Mandarin study plan
+3. Ask them where do they want to start
+4. Converse with them in Mandarin and write the pinyin in a line below it also the meaning as a different paragraph
+5. Answer their question regarding the Mandarin language and explain it shortly
+6. Explain to them if they ask for an explanation
 
 If they ask about you specifically, respond with this knowledge base:
 - You are a chatbot called ${BOT_NAME}
-- You are designed only to help them learn Chinese through conversation
-- Other topics outside of the Mandarin language, similarities to other languages, and Chinese culture is a no go
+- You are designed to help them learn Chinese only
+- Other topics outside of the Mandarin language and Chinese culture is a no go
 
 If they ask about anything else outside of the Mandarin language (similarities to other languages) or Chinese culture theme, respond with rejection and suggestion of turning the conversation back to the main topics.
 
@@ -45,7 +51,7 @@ export default function chatBotPage() {
     {
       id: "1",
       role: "assistant",
-      content: `嗨! 我是${BOT_NAME}！`,
+      content: `Hi :) I'm ${BOT_NAME} I heard that you need help learning Mandarin, where should we start?`,
     },
   ]);
   const [inputText, setInputText] = useState("");
@@ -125,7 +131,7 @@ export default function chatBotPage() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>{BOT_NAME}</Text>
+          <Text style={styles.headerTitle}>{BOT_NAME} Lin Jie</Text>
         </View>
 
         <FlatList
@@ -160,7 +166,7 @@ export default function chatBotPage() {
 
         {loading && (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="small" color="#e75555" />
+            <ActivityIndicator size="small" color="#007AFF" />
             <Text style={styles.loadingText}></Text>
           </View>
         )}
@@ -171,8 +177,8 @@ export default function chatBotPage() {
             style={styles.input}
             value={inputText}
             onChangeText={setInputText}
-            placeholder={`Talk to ${BOT_NAME}`}
-            placeholderTextColor="#532a2a"
+            placeholder={`Ask ${BOT_NAME}`}
+            placeholderTextColor="#8e8e93"
             multiline
             //WEB FUNCTION ONLY
             returnKeyType={Platform.OS == "web" ? "send" : "default"}
@@ -205,16 +211,16 @@ export default function chatBotPage() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#f3c3b5" },
+  safeArea: { flex: 1, backgroundColor: "#f5f5f7" },
   container: { flex: 1 },
   header: {
-    padding: 20,
-    backgroundColor: "#e99292",
+    padding: 16,
+    backgroundColor: "#ffffff",
     borderBottomWidth: 1,
-    borderBottomColor: "#e99292",
+    borderBottomColor: "#e5e5ea",
     alignItems: "center",
   },
-  headerTitle: { fontSize: 20, fontWeight: "600", color: "#ffffff" },
+  headerTitle: { fontSize: 18, fontWeight: "600", color: "#000000" },
   messageList: { padding: 16, paddingBottom: 8 },
   bubble: {
     maxWidth: "80%",
@@ -224,12 +230,12 @@ const styles = StyleSheet.create({
   },
   userBubble: {
     alignSelf: "flex-end",
-    backgroundColor: "#ff5e00",
+    backgroundColor: "#007AFF",
     borderBottomRightRadius: 4,
   },
   assistantBubble: {
     alignSelf: "flex-start",
-    backgroundColor: "#fcfa93",
+    backgroundColor: "#e5e5ea",
     borderBottomLeftRadius: 4,
   },
   messageText: { fontSize: 16, lineHeight: 22 },
@@ -241,13 +247,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 8,
   },
-  loadingText: { marginLeft: 8, color: "#938e8e", fontSize: 14 },
+  loadingText: { marginLeft: 8, color: "#8e8e93", fontSize: 14 },
   inputContainer: {
     flexDirection: "row",
     padding: 12,
-    backgroundColor: "#e99292",
+    backgroundColor: "#ffffff",
     borderTopWidth: 1,
-    borderTopColor: "#f3c3b5",
+    borderTopColor: "#e5e5ea",
     alignItems: "center",
   },
   input: {
@@ -262,11 +268,11 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     marginLeft: 10,
-    backgroundColor: "#ff2701",
+    backgroundColor: "#007AFF",
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
-  disabledButton: { backgroundColor: "#ff270141" },
+  disabledButton: { backgroundColor: "#b0d5ff" },
   sendButtonText: { color: "#ffffff", fontWeight: "600", fontSize: 15 },
 });
