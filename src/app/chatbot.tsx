@@ -1,17 +1,6 @@
-import { useRef, useState } from "react"; //IMPORTANT: SAFEAREA DEPRECATION
-import {
-  //TODO: CHANGE SAFEAREA
-  ActivityIndicator,
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useRef, useState } from "react";
+import { FlatList } from "react-native";
+import ChatLayout from "../components/chatbot_layout";
 
 const GROQ_API_KEY = process.env.EXPO_PUBLIC_GROQ_API_KEY;
 const BOT_NAME = "小胖";
@@ -103,14 +92,14 @@ export default function chatBotPage() {
         };
         setMessages((prev) => [...prev, botReply]);
       } else {
-        throw new Error(data.error?.message || "Failed to get response");
+        throw new Error(data.error?.message || "Failed to get response"); //CUSTOM
       }
     } catch (error) {
       console.error(error);
       const errorMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "请问, I encountered an error. Please try again.",
+        content: "请问, I encountered an error. Please try again.", //CUSTOM
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -119,154 +108,14 @@ export default function chatBotPage() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>{BOT_NAME}</Text>
-        </View>
-
-        <FlatList
-          ref={flatListRef}
-          data={messages}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.messageList}
-          onContentSizeChange={() =>
-            flatListRef.current?.scrollToEnd({ animated: true })
-          }
-          style={{ flex: 1 }}
-          renderItem={({ item }) => (
-            <View
-              style={[
-                styles.bubble,
-                item.role === "user"
-                  ? styles.userBubble
-                  : styles.assistantBubble,
-              ]}
-            >
-              <Text
-                style={[
-                  styles.messageText,
-                  item.role === "user" ? styles.userText : styles.assistantText,
-                ]}
-              >
-                {item.content}
-              </Text>
-            </View>
-          )}
-        />
-
-        {loading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="small" color="#e75555" />
-            <Text style={styles.loadingText}></Text>
-          </View>
-        )}
-
-        {/* Input Bar */}
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            value={inputText}
-            onChangeText={setInputText}
-            placeholder={`Talk to ${BOT_NAME}`}
-            placeholderTextColor="#532a2a"
-            multiline
-            //WEB FUNCTION ONLY
-            returnKeyType={Platform.OS == "web" ? "send" : "default"}
-            onSubmitEditing={Platform.OS == "web" ? sendMessage : undefined}
-            onKeyPress={(e) => {
-              if (Platform.OS === "web") {
-                const nativeEvt = e.nativeEvent as unknown as KeyboardEvent;
-
-                if (nativeEvt.key === "Enter" && !nativeEvt.shiftKey) {
-                  e.preventDefault?.();
-                  sendMessage();
-                }
-              }
-            }}
-          />
-          <TouchableOpacity
-            style={[
-              styles.sendButton,
-              !inputText.trim() && styles.disabledButton,
-            ]}
-            onPress={sendMessage}
-            disabled={!inputText.trim() || loading}
-          >
-            <Text style={styles.sendButtonText}>Send</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <ChatLayout
+      botName={BOT_NAME}
+      messages={messages}
+      inputText={inputText}
+      setInputText={setInputText}
+      sendMessage={sendMessage}
+      loading={loading}
+      themeKey="chunjie"
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#f3c3b5" },
-  container: { flex: 1 },
-  header: {
-    padding: 20,
-    backgroundColor: "#e99292",
-    borderBottomWidth: 1,
-    borderBottomColor: "#e99292",
-    alignItems: "center",
-  },
-  headerTitle: { fontSize: 20, fontWeight: "600", color: "#ffffff" },
-  messageList: { padding: 16, paddingBottom: 8 },
-  bubble: {
-    maxWidth: "80%",
-    padding: 12,
-    borderRadius: 18,
-    marginBottom: 10,
-  },
-  userBubble: {
-    alignSelf: "flex-end",
-    backgroundColor: "#ff5e00",
-    borderBottomRightRadius: 4,
-  },
-  assistantBubble: {
-    alignSelf: "flex-start",
-    backgroundColor: "#fcfa93",
-    borderBottomLeftRadius: 4,
-  },
-  messageText: { fontSize: 16, lineHeight: 22 },
-  userText: { color: "#ffffff" },
-  assistantText: { color: "#000000" },
-  loadingContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-  },
-  loadingText: { marginLeft: 8, color: "#938e8e", fontSize: 14 },
-  inputContainer: {
-    flexDirection: "row",
-    padding: 12,
-    backgroundColor: "#e99292",
-    borderTopWidth: 1,
-    borderTopColor: "#f3c3b5",
-    alignItems: "center",
-  },
-  input: {
-    flex: 1,
-    backgroundColor: "#f2f2f7",
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    fontSize: 16,
-    maxHeight: 100,
-    color: "#000000",
-  },
-  sendButton: {
-    marginLeft: 10,
-    backgroundColor: "#ff2701",
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  disabledButton: { backgroundColor: "#ff270141" },
-  sendButtonText: { color: "#ffffff", fontWeight: "600", fontSize: 15 },
-});

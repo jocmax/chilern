@@ -41,6 +41,7 @@ export default function HomeScreen() {
           Chat
         </ThemedText>
       </Pressable>
+      <ThemedText> </ThemedText>
       <Pressable
         style={({ pressed }) => [
           styles.startButton,

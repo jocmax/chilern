@@ -5,14 +5,14 @@ import { Platform } from "react-native";
 export const Colors = {
   light: {
     text: "#000000",
-    background: "#39b2c7",
+    background: "#2ce1ee",
     backgroundElement: "#F0F0F3",
     backgroundSelected: "#E0E1E6",
     textSecondary: "#60646C",
-    buttonBackground: "#b33b77",
-    backgroundPressed: "#681060",
+    buttonBackground: "#ffffff",
+    backgroundPressed: "#ffffff98",
     buttonText: "#000000",
-    border: "#5e0e36",
+    border: "#ffffff",
   },
   dark: {
     text: "#ffffff",
@@ -73,3 +73,44 @@ export const Spacing = {
 
 export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
 export const MaxContentWidth = 800;
+
+//CHATBOT COLOR THEMES
+export interface ChatTheme {
+  bg: string;
+  statusBarBg: string;
+  headerBg: string;
+  userBubbleBg: string;
+  assistantBubbleBg: string;
+  assistantTextColor: string;
+  sendButtonBg: string;
+  sendButtonDisabledBg: string;
+  loaderColor: string;
+  placeholderColor: string;
+}
+
+export const themes: Record<string, ChatTheme> = {
+  chunjie: {
+    bg: "#f3c3b5",
+    statusBarBg: "#e99292",
+    headerBg: "#e99292",
+    userBubbleBg: "#ff5e00",
+    assistantBubbleBg: "#fcfa93",
+    assistantTextColor: "#000000",
+    sendButtonBg: "#ff2701",
+    sendButtonDisabledBg: "#ff270141",
+    loaderColor: "#e75555",
+    placeholderColor: "#532a2a",
+  },
+  jade: {
+    bg: "#d1fae5",
+    statusBarBg: "#33c292",
+    headerBg: "#33c292",
+    userBubbleBg: "#08968f",
+    assistantBubbleBg: "#ffffff",
+    assistantTextColor: "#0f172a",
+    sendButtonBg: "#047857",
+    sendButtonDisabledBg: "#04785741",
+    loaderColor: "#047857",
+    placeholderColor: "#064e3b",
+  },
+};
