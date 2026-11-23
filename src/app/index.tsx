@@ -20,7 +20,7 @@ export default function HomeScreen() {
         你好
       </ThemedText>
       <Image
-        source={require("@/assets/images/snoopy-and-woodstock.png")}
+        source={require("@/assets/images/lolly.png")}
         style={styles.imageMainLogo}
       />
       <Pressable

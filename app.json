@@ -35,7 +35,6 @@
           }
         }
       ],
-
       [
         "expo-splash-screen",
         {
@@ -54,6 +53,12 @@
       "eas": {
         "projectId": "0c2b88e9-159e-4cc8-9a47-170407fcc709"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/0c2b88e9-159e-4cc8-9a47-170407fcc709"
     }
   }
 }
